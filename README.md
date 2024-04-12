@@ -19,6 +19,16 @@ You will also see any lint errors in the console.
 Launches the test runner in the interactive watch mode.\
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
+### Deployment
+
+GitHub Pages is used to deploy the app. The app is deployed to the following URL: [https://apicove-tools.github.io/](https://apicove-tools.github.io/)
+
+To deploy the app, run the following command:
+
+```bash
+USE_SSH=true yarn deploy
+```
+
 ### `yarn build`
 
 Builds the app for production to the `build` folder.\
