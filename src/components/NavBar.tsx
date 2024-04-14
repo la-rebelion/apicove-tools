@@ -4,7 +4,7 @@ import Typography from '@mui/joy/Typography'
 import Avatar from '@mui/joy/Avatar'
 import MapsHomeWorkIcon from '@mui/icons-material/MapsHomeWork'
 import ColorSchemeToggle from './ColorSchemeToggle'
-import logo from '../logo.svg'
+import logo from '../logo.png'
 import { Icon } from '@mui/material'
 
 export default function NavBar() {
@@ -40,9 +40,13 @@ export default function NavBar() {
         <Typography component="h1" fontWeight="xl">
           APICove Tools
         </Typography>
+        <Typography sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <small>{process.env.REACT_APP_VERSION} {process.env.NODE_ENV == 'development' ? process.env.NODE_ENV : 'Alpha'}</small>
+        </Typography>
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 3 }}>
+        <a href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=adrianescutia" target="_blank" style={{textDecoration: 'none'}}>
         <Box
           sx={{
             gap: 1,
@@ -53,13 +57,14 @@ export default function NavBar() {
           <Avatar
             variant="outlined"
             size="sm"
-            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=286"
+            src='https://media.licdn.com/dms/image/C4E03AQGyI0fUBAwZZA/profile-displayphoto-shrink_200_200/0/1587047383961?e=1718236800&v=beta&t=qQxqRZly0I60nZ_2LjCne6oXNsWuC8kpdSrWApCEqbc'
           />
           <Box sx={{ minWidth: 0, flex: 1 }}>
-            <Typography level="title-sm">Adrian E.</Typography>
-            <Typography level="body-xs">adrian@test.com</Typography>
+            <Typography level="title-sm">Adrian Escutia</Typography>
+            <Typography level="body-xs">Follow me @LinkedIn</Typography>
           </Box>
         </Box>
+        </a>
         <ColorSchemeToggle sx={{ alignSelf: 'center' }} />
       </Box>
     </Box>
