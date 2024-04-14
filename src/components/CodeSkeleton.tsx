@@ -1,11 +1,9 @@
-import * as React from 'react';
-import AspectRatio from '@mui/joy/AspectRatio';
-import Stack from '@mui/joy/Stack';
-import Button from '@mui/joy/Button';
-import Card from '@mui/joy/Card';
-import CardContent from '@mui/joy/CardContent';
-import Skeleton from '@mui/joy/Skeleton';
-import Typography from '@mui/joy/Typography';
+import AspectRatio from '@mui/joy/AspectRatio'
+import Stack from '@mui/joy/Stack'
+import Button from '@mui/joy/Button'
+import Card from '@mui/joy/Card'
+import Skeleton from '@mui/joy/Skeleton'
+import Typography from '@mui/joy/Typography'
 
 export default function CodeSkeleton() {
   return (
@@ -25,16 +23,15 @@ export default function CodeSkeleton() {
         </CardContent> */}
         <AspectRatio ratio="21/5">
           <Skeleton animation="wave" variant="overlay">
-            <img
-              alt=""
-              src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="
-            />
+            <img alt="" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />
           </Skeleton>
         </AspectRatio>
         <Typography sx={{ overflow: 'hidden' }}>
-            <Skeleton animation="wave">
-                {"[{\n  \"key1\": \"value\"\n},{\n  \"key1\": \"value\"\n},{\n  \"key1\": \"value\"\n},{\n  \"key1\": \"value\"\n},{\n  \"key1\": \"value\"\n},{\n  \"key1\": \"value\"\n},{\n  \"key1\": \"value\"\n},{\n  \"key1\": \"value\"\n}]"}
-            </Skeleton>
+          <Skeleton animation="wave">
+            {
+              '[{\n  "key1": "value"\n},{\n  "key1": "value"\n},{\n  "key1": "value"\n},{\n  "key1": "value"\n},{\n  "key1": "value"\n},{\n  "key1": "value"\n},{\n  "key1": "value"\n},{\n  "key1": "value"\n}]'
+            }
+          </Skeleton>
         </Typography>
         <Button>
           Read more
@@ -42,5 +39,5 @@ export default function CodeSkeleton() {
         </Button>
       </Card>
     </Stack>
-  );
+  )
 }

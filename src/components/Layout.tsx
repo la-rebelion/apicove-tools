@@ -1,6 +1,6 @@
-import * as React from 'react';
-import Box, { BoxProps } from '@mui/joy/Box';
-import Sheet from '@mui/joy/Sheet';
+import * as React from 'react'
+import Box, { BoxProps } from '@mui/joy/Box'
+import Sheet from '@mui/joy/Sheet'
 
 function Root(props: BoxProps) {
   return (
@@ -20,7 +20,7 @@ function Root(props: BoxProps) {
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}
     />
-  );
+  )
 }
 
 function Header(props: BoxProps) {
@@ -48,7 +48,7 @@ function Header(props: BoxProps) {
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}
     />
-  );
+  )
 }
 
 function SideNav(props: BoxProps) {
@@ -71,7 +71,7 @@ function SideNav(props: BoxProps) {
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}
     />
-  );
+  )
 }
 
 function SidePane(props: BoxProps) {
@@ -92,7 +92,7 @@ function SidePane(props: BoxProps) {
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}
     />
-  );
+  )
 }
 
 function Main(props: BoxProps) {
@@ -103,13 +103,11 @@ function Main(props: BoxProps) {
       {...props}
       sx={[{ p: 2 }, ...(Array.isArray(props.sx) ? props.sx : [props.sx])]}
     />
-  );
+  )
 }
 
-function SideDrawer(
-  props: BoxProps & { onClose: React.MouseEventHandler<HTMLDivElement> },
-) {
-  const { onClose, ...other } = props;
+function SideDrawer(props: BoxProps & { onClose: React.MouseEventHandler<HTMLDivElement> }) {
+  const { onClose, ...other } = props
   return (
     <Box
       {...other}
@@ -124,8 +122,7 @@ function SideDrawer(
         sx={{
           position: 'absolute',
           inset: 0,
-          bgcolor: (theme) =>
-            `rgba(${theme.vars.palette.neutral.darkChannel} / 0.8)`,
+          bgcolor: (theme) => `rgba(${theme.vars.palette.neutral.darkChannel} / 0.8)`,
         }}
       />
       <Sheet
@@ -141,7 +138,7 @@ function SideDrawer(
         {props.children}
       </Sheet>
     </Box>
-  );
+  )
 }
 
 export default {
@@ -151,4 +148,4 @@ export default {
   SidePane,
   SideDrawer,
   Main,
-};
+}

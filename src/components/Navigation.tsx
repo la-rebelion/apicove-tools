@@ -1,23 +1,21 @@
-import * as React from 'react';
-import Box from '@mui/joy/Box';
-import List from '@mui/joy/List';
-import ListSubheader from '@mui/joy/ListSubheader';
-import ListItem from '@mui/joy/ListItem';
-import ListItemButton from '@mui/joy/ListItemButton';
-import ListItemDecorator from '@mui/joy/ListItemDecorator';
-import ListItemContent from '@mui/joy/ListItemContent';
+import * as React from 'react'
+import Box from '@mui/joy/Box'
+import List from '@mui/joy/List'
+import ListSubheader from '@mui/joy/ListSubheader'
+import ListItem from '@mui/joy/ListItem'
+import ListItemButton from '@mui/joy/ListItemButton'
+import ListItemDecorator from '@mui/joy/ListItemDecorator'
+import ListItemContent from '@mui/joy/ListItemContent'
 
-import FolderRoundedIcon from '@mui/icons-material/FolderRounded';
-import ShareRoundedIcon from '@mui/icons-material/ShareRounded';
-import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import FolderRoundedIcon from '@mui/icons-material/FolderRounded'
+import ShareRoundedIcon from '@mui/icons-material/ShareRounded'
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 
 export default function Navigation() {
   return (
     <List size="sm" sx={{ '--ListItem-radius': '8px', '--List-gap': '4px' }}>
       <ListItem nested>
-        <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
-          Browse
-        </ListSubheader>
+        <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>Browse</ListSubheader>
         <List
           aria-labelledby="nav-list-browse"
           sx={{
@@ -51,9 +49,7 @@ export default function Navigation() {
         </List>
       </ListItem>
       <ListItem nested sx={{ mt: 2 }}>
-        <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>
-          Tags
-        </ListSubheader>
+        <ListSubheader sx={{ letterSpacing: '2px', fontWeight: '800' }}>Tags</ListSubheader>
         <List
           aria-labelledby="nav-list-tags"
           size="sm"
@@ -125,5 +121,5 @@ export default function Navigation() {
         </List>
       </ListItem>
     </List>
-  );
+  )
 }
