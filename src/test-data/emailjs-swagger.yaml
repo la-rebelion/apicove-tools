@@ -1,0 +1,40 @@
+swagger: '2.0'
+info:
+  title: EmailJS API
+  version: '1.0'
+host: 'api.emailjs.com'
+schemes:
+  - https
+tags:
+  - name: Email Operations
+    description: Operations related to sending emails and forms
+  - name: History Operations
+    description: Operations related to retrieving history
+paths:
+  /send:
+    post:
+      tags:
+        - Email Operations
+      summary: Sends an email.
+      parameters:
+        - name: email
+          in: body
+          required: true
+          schema:
+            type: string
+  /send-form:
+    post:
+      tags:
+        - Email Operations
+      summary: Sends a form.
+      parameters:
+        - name: form
+          in: body
+          required: true
+          schema:
+            type: string
+  /history:
+    get:
+      tags:
+        - History Operations
+      summary: Gets the history of sent emails.

@@ -1,4 +1,6 @@
-import * as React from 'react'
+
+import { useState, useEffect } from 'react'
+
 import { CssVarsProvider } from '@mui/joy/styles'
 import CssBaseline from '@mui/joy/CssBaseline'
 import Box from '@mui/joy/Box'
@@ -11,22 +13,107 @@ import './App.css'
 import Layout from './components/Layout'
 import Navigation from './components/Navigation'
 import APITextarea from './components/APITextarea'
-import { Link, List, ListItem, ListItemDecorator, Typography } from '@mui/joy'
+import { IconButton, Link, List, ListItem, ListItemDecorator, Snackbar, Typography } from '@mui/joy'
+import CloseIcon from '@mui/icons-material/Close'
 import CodeSkeleton from './components/CodeSkeleton'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import ErrorBoundary from './components/ErrorBoundary'
 import InputSubscription from './components/InputSubscription'
 
+// import { SwaggerConverter } from '@la-rebelion/swagger-converter/dist/src/SwaggerConverter'
+// import { JestInstance } from '@la-rebelion/swagger-converter/dist/src/JestInstance'
+import { JestFactory } from '@la-rebelion/swagger-converter/dist/src/JestFactory'
+
+// ONLY for local testing when the package is not published
+// add "../../converters/oas-converter/dist/src/**/*" to the tsconfig.json paths
+// import { JestFactory } from 'oas-converter/dist/src/JestFactory'
+import swaggerExample from './test-data/emailjs-swagger.json'
+
 function App() {
-  const [drawerOpen, setDrawerOpen] = React.useState(false)
-  const [isGenerated, setIsGenerated] = React.useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [isGenerated, setIsGenerated] = useState(false)
+  const [swaggerContent, setSwaggerContent] = useState('{}')
+  const [outputContent, setOutputContent] = useState('')
+  const [open, setOpen] = useState(false)
+  const [alertMessage, setAlertMessage] = useState('')
+  const [alertType, setAlertType] = useState('info')
+  const alertColor: { [key: string]: string } = {
+    success: '#4caf50',
+    error: 'pink',
+    warning: 'orange',
+    info: '#35b1ff',
+  }
+  const color = alertColor[alertType]
+
+  const showMessage = (message: string, msgType: string) => {
+    setAlertMessage(message)
+    setAlertType(msgType)
+    setOpen(true)
+  }
+  const showInfoMessage = (message: string) => {
+    showMessage(message, 'info')
+  }
+
+  const showErrorMessage = (message: string) => {
+    showMessage(message, 'error')
+  }
+
+
+  // Create an instance of the JestFactory
+  const createFactoryInstance = (swaggerObj: any) => {
+    // @todo - add the other factory instances and 
+    // handle types, for instance the StrapiFactory
+    return new JestFactory(swaggerObj)
+  }
+
+  // initialize the SwaggerConverter when render page first time
+  useEffect(() => {
+    setSwaggerContent(JSON.stringify(swaggerExample, null, 2))
+  }, [])
 
   const handleGenerate = (generated: boolean) => {
+    const swaggerFactory = createFactoryInstance(JSON.parse(swaggerContent))
+    if (!swaggerFactory.isValid()) {
+      console.error('Cannot create a new instance of JestFactory, Swagger content is invalid')
+      showErrorMessage('Cannot create a new instance of JestFactory, Swagger content is invalid')
+      return
+    }
+    const jestInstance = swaggerFactory.create()
+    const jestTests = jestInstance.render()
     setIsGenerated(generated)
+    setOutputContent(jestTests)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
   }
 
   return (
     <CssVarsProvider disableTransitionOnChange>
+
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          sx={{
+            top: 100,
+            backgroundColor: color,
+          }}
+          open={open}
+          onClose={handleClose}
+          key={'top-center'}
+          autoHideDuration={5000}
+          endDecorator={
+            <IconButton
+              onClick={() => setOpen(false)}
+              size="sm"
+            >
+              <CloseIcon />
+            </IconButton>
+          }
+        >
+          {alertMessage}
+        </Snackbar>
+      </Box>
       <HelmetProvider>
         <Helmet>
           <title>APICove Tools</title>
@@ -94,14 +181,16 @@ function App() {
                 {/* The outout/generated text */}
                 {isGenerated ? (
                   <APITextarea
-                    codeString={'{\n  "key": "value"\n}'}
+                    codeString={outputContent}
                     readonly={true}
                     height="50%"
                     language="typescript"
                     showCopyButton={true}
                     showButton={false}
                     buttonText="Clear"
-                    onButtonClick={() => console.log('Button clicked')}
+                    onButtonClick={() => showInfoMessage('Button clicked')}
+                    // do nothing when code changes for this textarea
+                    onCodeChange={() => { }}
                   />
                 ) : (
                   <Box
@@ -173,22 +262,27 @@ function App() {
                         <ListItemDecorator>⌛</ListItemDecorator> Save time and effort with
                         complex APIs
                       </ListItem>
+                      <ListItem>
+                        <ListItemDecorator>🔏</ListItemDecorator> <a href='https://localfirstweb.dev'>Local-first</a>, no data is
+                        send to the server.
+                      </ListItem>
                     </List>
                     <InputSubscription />
                     <Typography level="body-xs" sx={{ mb: 2 }}>
-                      Get the latest updates to help you build faster and smarter, 
-                      <br/>no spam pinky promise! 🤞
+                      Get the latest updates to help you build faster and smarter,
+                      <br />no spam pinky promise! 🤞
                     </Typography>
                   </Box>
                 </Box>
               </Box>
               {/* The input text to convert from */}
               <APITextarea
-                codeString={'{\n  "key": "value"\n}'}
+                codeString={swaggerContent}
                 showCopyButton={false}
                 showButton={true}
                 buttonText="Jest"
                 onButtonClick={() => handleGenerate(!isGenerated)}
+                onCodeChange={(newCode) => setSwaggerContent(newCode)}
               />
             </Box>
             {/* Content to describe the API-Tools */}

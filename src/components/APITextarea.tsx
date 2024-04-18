@@ -15,6 +15,7 @@ interface APITextareaProps {
   showButton: boolean
   buttonText: string
   onButtonClick: () => void
+  onCodeChange: (newCode: string) => void
 }
 
 const APITextarea: React.FC<APITextareaProps> = ({
@@ -26,6 +27,7 @@ const APITextarea: React.FC<APITextareaProps> = ({
   showButton,
   buttonText,
   onButtonClick,
+  onCodeChange,
 }) => {
   const [code, setCode] = useState<string>('{\n  "key1": "value"\n}')
   useMemo(() => setCode(codeString), [codeString])
@@ -77,15 +79,20 @@ const APITextarea: React.FC<APITextareaProps> = ({
           language={language}
           theme="light"
           value={code}
-          onChange={(value) => setCode(value ?? '')}
-          options={{
-            inlineSuggest: true,
-            fontSize: '16px',
+          onChange={(value) => {
+            setCode(value ?? '')
+            onCodeChange(value ?? '')
+          }}
+        options={{
+            inlineSuggest: {
+                enabled: true,
+            },
+            fontSize: 16,
             formatOnType: true,
-            autoClosingBrackets: true,
+            autoClosingBrackets: 'languageDefined',
             minimap: { scale: 10 },
             readOnly: readonly,
-          }}
+        }}
         />
         {showButton && (
           <Box sx={{ gap: 1.5, '& > button': { flex: 1 }, justifyContent: 'flex-end' }}>

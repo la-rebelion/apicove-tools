@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Box, IconButton } from '@mui/joy'
+import { Box, Divider, IconButton } from '@mui/joy'
 import Typography from '@mui/joy/Typography'
 import Avatar from '@mui/joy/Avatar'
 import ColorSchemeToggle from './ColorSchemeToggle'
@@ -43,6 +43,12 @@ export default function NavBar() {
             {process.env.REACT_APP_VERSION}{' '}
             {process.env.NODE_ENV === 'development' ? process.env.NODE_ENV : 'Alpha'}
           </small>
+        </Typography>
+        <Divider orientation="vertical" />
+
+        <Typography level="body-xs" color="neutral">
+          <a href="https://www.buymeacoffee.com/larebelion">Add caffeine</a> to my
+          nights and weekends. ☕
         </Typography>
       </Box>
 

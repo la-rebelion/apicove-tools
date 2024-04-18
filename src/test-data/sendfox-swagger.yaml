@@ -1,0 +1,119 @@
+swagger: '2.0'
+info:
+  title: SendFox API
+  version: '1.0'
+host: 'api.sendfox.com'
+schemes:
+  - https
+paths:
+  /me:
+    get:
+      summary: Gets information for authenticated user.
+  /lists:
+    get:
+      summary: Gets paginated lists.
+    post:
+      summary: Creates new list.
+      parameters:
+        - name: name
+          in: body
+          required: true
+          schema:
+            type: string
+  /lists/{list_id}/contacts:
+    get:
+      summary: Gets paginated contacts within a list.
+      parameters:
+        - name: list_id
+          in: path
+          required: true
+          type: integer
+    delete:
+      summary: Removes contact from list.
+      parameters:
+        - name: list_id
+          in: path
+          required: true
+          type: integer
+        - name: contact_id
+          in: path
+          required: true
+          type: integer
+  /contacts:
+    get:
+      summary: Gets paginated contacts.
+    post:
+      summary: Creates new contact.
+      parameters:
+        - name: email
+          in: body
+          required: true
+          schema:
+            type: string
+        - name: first_name
+          in: body
+          required: false
+          schema:
+            type: string
+        - name: last_name
+          in: body
+          required: false
+          schema:
+            type: string
+        - name: lists
+          in: body
+          required: false
+          schema:
+            type: array
+            items:
+              type: integer
+  /contacts/{contact_id}:
+    get:
+      summary: Gets contact by ID.
+      parameters:
+        - name: contact_id
+          in: path
+          required: true
+          type: integer
+  /contacts?email={contact_email}:
+    get:
+      summary: Gets contact by email.
+      parameters:
+        - name: contact_email
+          in: query
+          required: true
+          type: string
+  /contacts/unsubscribed:
+    get:
+      summary: Gets paginated unsubscribed contacts.
+  /unsubscribe:
+    patch:
+      summary: Unsubscribe contact.
+      parameters:
+        - name: email
+          in: body
+          required: true
+          schema:
+            type: string
+  /campaigns:
+    get:
+      summary: Gets paginated campaigns.
+  /campaigns/{campaign_id}:
+    get:
+      summary: Gets campaign by ID.
+      parameters:
+        - name: campaign_id
+          in: path
+          required: true
+          type: integer
+  /automations:
+    get:
+      summary: Gets paginated automations.
+  /automations/{automation_id}:
+    get:
+      summary: Gets automation by ID.
+      parameters:
+        - name: automation_id
+          in: path
+          required: true
+          type: integer
