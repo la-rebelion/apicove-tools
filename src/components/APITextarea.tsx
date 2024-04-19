@@ -43,7 +43,7 @@ const APITextarea: React.FC<APITextareaProps> = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: { height },
+        height: "100%",
         width: '100%',
         padding: 2,
         position: 'relative',
@@ -58,7 +58,9 @@ const APITextarea: React.FC<APITextareaProps> = ({
             'linear-gradient(to top, rgba(74,94,231,0.8), rgba(0,0,0,0) 400px), linear-gradient(to top, rgba(10,155,209,0.8), rgba(0,0,0,0) 1100px)',
         }}
       />
-      <CardContent sx={{ justifyContent: 'flex-end' }}>
+      <CardContent 
+        sx={{ justifyContent: 'center' }}
+      >
         {showCopyButton && (
           <Tooltip title="Copy code">
             <IconButton
@@ -75,7 +77,7 @@ const APITextarea: React.FC<APITextareaProps> = ({
           </Tooltip>
         )}
         <Editor
-          height="100%"
+          height={ height }
           language={language}
           theme="light"
           value={code}

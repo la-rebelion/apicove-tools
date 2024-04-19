@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react'
 
-import { CssVarsProvider } from '@mui/joy/styles'
+import { CssVarsProvider, useTheme } from '@mui/joy/styles'
 import CssBaseline from '@mui/joy/CssBaseline'
 import Box from '@mui/joy/Box'
 import Stack from '@mui/joy/Stack'
@@ -13,7 +13,20 @@ import './App.css'
 import Layout from './components/Layout'
 import Navigation from './components/Navigation'
 import APITextarea from './components/APITextarea'
-import { IconButton, Link, List, ListItem, ListItemDecorator, Snackbar, Typography } from '@mui/joy'
+import { Button, 
+  DialogContent, 
+  IconButton, 
+  Link, 
+  List, 
+  ListItem, 
+  ListItemDecorator, 
+  Modal, 
+  ModalClose, 
+  ModalDialog, 
+  ModalDialogProps, 
+  Snackbar, 
+  Typography 
+} from '@mui/joy'
 import CloseIcon from '@mui/icons-material/Close'
 import CodeSkeleton from './components/CodeSkeleton'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
@@ -28,6 +41,7 @@ import { JestFactory } from '@la-rebelion/swagger-converter/dist/src/JestFactory
 // add "../../converters/oas-converter/dist/src/**/*" to the tsconfig.json paths
 // import { JestFactory } from 'oas-converter/dist/src/JestFactory'
 import swaggerExample from './test-data/emailjs-swagger.json'
+import { useMediaQuery } from '@mui/material'
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -37,6 +51,13 @@ function App() {
   const [open, setOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
   const [alertType, setAlertType] = useState('info')
+  const [layout, setLayout] = useState<ModalDialogProps['layout'] | undefined>(
+    undefined,
+  )
+
+  const theme = useTheme()
+  const isSmallScreen = !useMediaQuery(theme.breakpoints.up('sm'))
+
   const alertColor: { [key: string]: string } = {
     success: '#4caf50',
     error: 'pink',
@@ -71,7 +92,7 @@ function App() {
     setSwaggerContent(JSON.stringify(swaggerExample, null, 2))
   }, [])
 
-  const handleGenerate = (generated: boolean) => {
+  const handleGenerate = () => {
     const swaggerFactory = createFactoryInstance(JSON.parse(swaggerContent))
     if (!swaggerFactory.isValid()) {
       console.error('Cannot create a new instance of JestFactory, Swagger content is invalid')
@@ -80,8 +101,9 @@ function App() {
     }
     const jestInstance = swaggerFactory.create()
     const jestTests = jestInstance.render()
-    setIsGenerated(generated)
+    setIsGenerated(true)
     setOutputContent(jestTests)
+    setLayout('fullscreen')
   }
 
   const handleClose = () => {
@@ -167,7 +189,7 @@ function App() {
               >
                 <HeaderSection />
               </Stack>
-              <Box
+              <Box id="generated-code"
                 sx={{
                   gridRow: 'span 3',
                   display: { xs: 'none', md: 'flex' },
@@ -183,7 +205,7 @@ function App() {
                   <APITextarea
                     codeString={outputContent}
                     readonly={true}
-                    height="50%"
+                    height={isSmallScreen ? "80%" : "100%"}
                     language="typescript"
                     showCopyButton={true}
                     showButton={false}
@@ -193,7 +215,7 @@ function App() {
                     onCodeChange={() => { }}
                   />
                 ) : (
-                  <Box
+                  <Box id="code-skeleton"
                     sx={{
                       display: 'flex',
                       flexDirection: 'column',
@@ -209,8 +231,7 @@ function App() {
                   </Box>
                 )}
                 {/* let's add a description of the features */}
-                <Box
-                  id="features"
+                <Box id="features"
                   sx={{
                     height: '50%',
                     display: 'flex',
@@ -281,12 +302,13 @@ function App() {
                 showCopyButton={false}
                 showButton={true}
                 buttonText="Jest"
-                onButtonClick={() => handleGenerate(!isGenerated)}
+                height={isSmallScreen ? "80%" : "100%"}
+                onButtonClick={() => handleGenerate()}
                 onCodeChange={(newCode) => setSwaggerContent(newCode)}
               />
             </Box>
             {/* Content to describe the API-Tools */}
-            <Box
+            <Box id="text-content" key={'text-content'}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -393,6 +415,52 @@ function App() {
               </Typography>
             </Box>
           </Layout.Main>
+          <Modal
+            aria-labelledby="modal-title"
+            aria-describedby="modal-desc"
+            // open={openModal}
+            // onClose={() => setOpenModal(false)}
+            sx={{
+              display: 'flex', justifyContent: 'center', alignItems: 'center'
+            }}
+            open={!!layout} 
+            onClose={() => setLayout(undefined)}
+            >
+            {/* move the ModalDialog 55px from top because header */}
+            <ModalDialog layout={layout}
+              sx={{
+                top: '55px',
+              }}
+            >
+              <ModalClose />
+              <DialogContent>
+                <Typography
+                  component="h2"
+                  id="modal-title"
+                  level="h4"
+                  textColor="inherit"
+                  fontWeight="lg"
+                  mb={1}
+                >
+                  Your generated code
+                </Typography>
+                {/* @todo - refactor, reuse generated code APITextarea */}
+                <APITextarea
+                  codeString={outputContent}
+                  readonly={true}
+                  height="100%"
+                  language="typescript"
+                  showCopyButton={true}
+                  showButton={false}
+                  buttonText="Clear"
+                  onButtonClick={() => showInfoMessage('Button clicked')}
+                  // do nothing when code changes for this textarea
+                  onCodeChange={() => { }}
+                />
+                <Button onClick={() => setLayout(undefined)}>Close</Button>
+              </DialogContent>
+            </ModalDialog>
+          </Modal>
         </ErrorBoundary>
       </HelmetProvider>
     </CssVarsProvider>
