@@ -47,8 +47,8 @@ export default function NavBar() {
         <Divider orientation="vertical" />
 
         <Typography level="body-xs" color="neutral">
-          <a href="https://www.buymeacoffee.com/larebelion">Add caffeine</a> to my
-          nights and weekends. ☕
+          <a href="https://www.buymeacoffee.com/larebelion">Add caffeine</a> to my nights and
+          weekends. ☕
         </Typography>
       </Box>
 

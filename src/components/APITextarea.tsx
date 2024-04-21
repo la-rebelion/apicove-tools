@@ -14,8 +14,8 @@ interface APITextareaProps {
   showCopyButton: boolean
   showButton: boolean
   buttonText: string
-  onButtonClick: () => void
-  onCodeChange: (newCode: string) => void
+  onButtonClick?: () => void
+  onCodeChange?: (newCode: string) => void
 }
 
 const APITextarea: React.FC<APITextareaProps> = ({
@@ -43,7 +43,7 @@ const APITextarea: React.FC<APITextareaProps> = ({
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        height: "100%",
+        height: '100%',
         width: '100%',
         padding: 2,
         position: 'relative',
@@ -58,9 +58,7 @@ const APITextarea: React.FC<APITextareaProps> = ({
             'linear-gradient(to top, rgba(74,94,231,0.8), rgba(0,0,0,0) 400px), linear-gradient(to top, rgba(10,155,209,0.8), rgba(0,0,0,0) 1100px)',
         }}
       />
-      <CardContent 
-        sx={{ justifyContent: 'center' }}
-      >
+      <CardContent sx={{ justifyContent: 'center' }}>
         {showCopyButton && (
           <Tooltip title="Copy code">
             <IconButton
@@ -77,24 +75,27 @@ const APITextarea: React.FC<APITextareaProps> = ({
           </Tooltip>
         )}
         <Editor
-          height={ height }
+          height={height}
           language={language}
           theme="light"
           value={code}
           onChange={(value) => {
-            setCode(value ?? '')
-            onCodeChange(value ?? '')
+            // if readonly is false and onCodeChange is a function, just in case we forgot to pass it
+            if (!readonly && onCodeChange && typeof onCodeChange === 'function') {
+              setCode(value ?? '')
+              onCodeChange(value ?? '')
+            }
           }}
-        options={{
+          options={{
             inlineSuggest: {
-                enabled: true,
+              enabled: true,
             },
             fontSize: 16,
             formatOnType: true,
             autoClosingBrackets: 'languageDefined',
             minimap: { scale: 10 },
             readOnly: readonly,
-        }}
+          }}
         />
         {showButton && (
           <Box sx={{ gap: 1.5, '& > button': { flex: 1 }, justifyContent: 'flex-end' }}>
@@ -108,8 +109,9 @@ const APITextarea: React.FC<APITextareaProps> = ({
                   backgroundColor: 'rgba(13,195,209.04)',
                   border: '2px solid white',
                 }}
-                onClick={onButtonClick}
-                startDecorator="🃏"
+                // if showButton is true, onButtonClick is required, just in case we forgot to pass it
+                onClick={onButtonClick || (() => {})}
+                startDecorator="☕"
               >
                 {buttonText}
               </Button>

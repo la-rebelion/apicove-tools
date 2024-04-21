@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 
 import { CssVarsProvider, useTheme } from '@mui/joy/styles'
@@ -13,19 +12,14 @@ import './App.css'
 import Layout from './components/Layout'
 import Navigation from './components/Navigation'
 import APITextarea from './components/APITextarea'
-import { Button, 
-  DialogContent, 
-  IconButton, 
-  Link, 
-  List, 
-  ListItem, 
-  ListItemDecorator, 
-  Modal, 
-  ModalClose, 
-  ModalDialog, 
-  ModalDialogProps, 
-  Snackbar, 
-  Typography 
+import {
+  IconButton,
+  Link,
+  List,
+  ListItem,
+  ListItemDecorator,
+  Snackbar,
+  Typography,
 } from '@mui/joy'
 import CloseIcon from '@mui/icons-material/Close'
 import CodeSkeleton from './components/CodeSkeleton'
@@ -42,6 +36,7 @@ import { JestFactory } from '@la-rebelion/swagger-converter/dist/src/JestFactory
 // import { JestFactory } from 'oas-converter/dist/src/JestFactory'
 import swaggerExample from './test-data/emailjs-swagger.json'
 import { useMediaQuery } from '@mui/material'
+import ConvertedCodeModal from './components/ConvertedCodeModal'
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -51,9 +46,7 @@ function App() {
   const [open, setOpen] = useState(false)
   const [alertMessage, setAlertMessage] = useState('')
   const [alertType, setAlertType] = useState('info')
-  const [layout, setLayout] = useState<ModalDialogProps['layout'] | undefined>(
-    undefined,
-  )
+  const [showModalCode, setShowModalCode] = useState(false)
 
   const theme = useTheme()
   const isSmallScreen = !useMediaQuery(theme.breakpoints.up('sm'))
@@ -79,10 +72,9 @@ function App() {
     showMessage(message, 'error')
   }
 
-
   // Create an instance of the JestFactory
   const createFactoryInstance = (swaggerObj: any) => {
-    // @todo - add the other factory instances and 
+    // @todo - add the other factory instances and
     // handle types, for instance the StrapiFactory
     return new JestFactory(swaggerObj)
   }
@@ -96,14 +88,17 @@ function App() {
     const swaggerFactory = createFactoryInstance(JSON.parse(swaggerContent))
     if (!swaggerFactory.isValid()) {
       console.error('Cannot create a new instance of JestFactory, Swagger content is invalid')
-      showErrorMessage('Cannot create a new instance of JestFactory, Swagger content is invalid')
+      showErrorMessage(
+        'Cannot create a new instance of JestFactory, Swagger content is invalid'
+      )
       return
     }
     const jestInstance = swaggerFactory.create()
     const jestTests = jestInstance.render()
     setIsGenerated(true)
     setOutputContent(jestTests)
-    setLayout('fullscreen')
+    setShowModalCode(true)
+    // setLayoutModal('fullscreen')
   }
 
   const handleClose = () => {
@@ -112,7 +107,6 @@ function App() {
 
   return (
     <CssVarsProvider disableTransitionOnChange>
-
       <Box sx={{ width: 500 }}>
         <Snackbar
           anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -125,10 +119,7 @@ function App() {
           key={'top-center'}
           autoHideDuration={5000}
           endDecorator={
-            <IconButton
-              onClick={() => setOpen(false)}
-              size="sm"
-            >
+            <IconButton onClick={() => setOpen(false)} size="sm">
               <CloseIcon />
             </IconButton>
           }
@@ -145,7 +136,7 @@ function App() {
           />
           <meta
             name="keywords"
-            content="API, testing, development, tools, jest, swagger, openapi, strapi"
+            content="API, testing, development, tools, jest, swagger, openapi, strapi, mocha, chai, unit testing, integration testing"
           />
           <script
             data-name="BMC-Widget"
@@ -189,7 +180,8 @@ function App() {
               >
                 <HeaderSection />
               </Stack>
-              <Box id="generated-code"
+              <Box
+                id="generated-code"
                 sx={{
                   gridRow: 'span 3',
                   display: { xs: 'none', md: 'flex' },
@@ -205,17 +197,18 @@ function App() {
                   <APITextarea
                     codeString={outputContent}
                     readonly={true}
-                    height={isSmallScreen ? "80%" : "100%"}
+                    height={isSmallScreen ? '80%' : '100%'}
                     language="typescript"
                     showCopyButton={true}
                     showButton={false}
                     buttonText="Clear"
                     onButtonClick={() => showInfoMessage('Button clicked')}
                     // do nothing when code changes for this textarea
-                    onCodeChange={() => { }}
+                    onCodeChange={() => {}}
                   />
                 ) : (
-                  <Box id="code-skeleton"
+                  <Box
+                    id="code-skeleton"
                     sx={{
                       display: 'flex',
                       flexDirection: 'column',
@@ -231,7 +224,8 @@ function App() {
                   </Box>
                 )}
                 {/* let's add a description of the features */}
-                <Box id="features"
+                <Box
+                  id="features"
                   sx={{
                     height: '50%',
                     display: 'flex',
@@ -259,7 +253,8 @@ function App() {
                       </ListItem>
                       <ListItem>
                         <ListItemDecorator>🚀</ListItemDecorator> Use it in your{' '}
-                        <a href="https://jestjs.io/docs/tutorial-async">Jest test!</a>
+                        <a href="https://jestjs.io/docs/tutorial-async">Jest</a> and{' '}
+                        <a href="https://mochajs.org/">Mocha</a> test!
                       </ListItem>
                     </List>
                   </Box>
@@ -274,24 +269,28 @@ function App() {
                         <ListItemDecorator>🤖</ListItemDecorator> Automate your API testing
                       </ListItem>
                       <ListItem>
-                        <ListItemDecorator>🃏</ListItemDecorator> Use Jest for your API testing
+                        <ListItemDecorator>🃏</ListItemDecorator> Use Jest or Mocha for your
+                        API testing
                       </ListItem>
                       <ListItem>
-                        <ListItemDecorator>🧩</ListItemDecorator> Convert Swagger/OAS to Jest
+                        <ListItemDecorator>🧩</ListItemDecorator> Convert Swagger/OAS to
+                        Jest/Mocha
                       </ListItem>
                       <ListItem>
                         <ListItemDecorator>⌛</ListItemDecorator> Save time and effort with
                         complex APIs
                       </ListItem>
                       <ListItem>
-                        <ListItemDecorator>🔏</ListItemDecorator> <a href='https://localfirstweb.dev'>Local-first</a>, no data is
-                        send to the server.
+                        <ListItemDecorator>🔏</ListItemDecorator>{' '}
+                        <a href="https://localfirstweb.dev">Local-first</a>, no data is send to
+                        the server.
                       </ListItem>
                     </List>
                     <InputSubscription />
                     <Typography level="body-xs" sx={{ mb: 2 }}>
                       Get the latest updates to help you build faster and smarter,
-                      <br />no spam pinky promise! 🤞
+                      <br />
+                      no spam pinky promise! 🤞
                     </Typography>
                   </Box>
                 </Box>
@@ -301,14 +300,16 @@ function App() {
                 codeString={swaggerContent}
                 showCopyButton={false}
                 showButton={true}
-                buttonText="Jest"
-                height={isSmallScreen ? "80%" : "100%"}
+                buttonText="Mocha"
+                height={isSmallScreen ? '80%' : '100%'}
                 onButtonClick={() => handleGenerate()}
                 onCodeChange={(newCode) => setSwaggerContent(newCode)}
               />
             </Box>
             {/* Content to describe the API-Tools */}
-            <Box id="text-content" key={'text-content'}
+            <Box
+              id="text-content"
+              key={'text-content'}
               sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -401,7 +402,7 @@ function App() {
                 <a
                   href="https://www.linkedin.com/comm/mynetwork/discovery-see-all?usecase=PEOPLE_FOLLOWS&followMember=adrianescutia"
                   target="_blank"
-                  rel='noreferrer noopener'
+                  rel="noreferrer noopener"
                   style={{ textDecoration: 'none' }}
                 >
                   Adrian Escutia
@@ -415,52 +416,11 @@ function App() {
               </Typography>
             </Box>
           </Layout.Main>
-          <Modal
-            aria-labelledby="modal-title"
-            aria-describedby="modal-desc"
-            // open={openModal}
-            // onClose={() => setOpenModal(false)}
-            sx={{
-              display: 'flex', justifyContent: 'center', alignItems: 'center'
-            }}
-            open={!!layout} 
-            onClose={() => setLayout(undefined)}
-            >
-            {/* move the ModalDialog 55px from top because header */}
-            <ModalDialog layout={layout}
-              sx={{
-                top: '55px',
-              }}
-            >
-              <ModalClose />
-              <DialogContent>
-                <Typography
-                  component="h2"
-                  id="modal-title"
-                  level="h4"
-                  textColor="inherit"
-                  fontWeight="lg"
-                  mb={1}
-                >
-                  Your generated code
-                </Typography>
-                {/* @todo - refactor, reuse generated code APITextarea */}
-                <APITextarea
-                  codeString={outputContent}
-                  readonly={true}
-                  height="100%"
-                  language="typescript"
-                  showCopyButton={true}
-                  showButton={false}
-                  buttonText="Clear"
-                  onButtonClick={() => showInfoMessage('Button clicked')}
-                  // do nothing when code changes for this textarea
-                  onCodeChange={() => { }}
-                />
-                <Button onClick={() => setLayout(undefined)}>Close</Button>
-              </DialogContent>
-            </ModalDialog>
-          </Modal>
+          <ConvertedCodeModal
+            open={showModalCode}
+            setOpen={setShowModalCode}
+            outputContent={outputContent}
+          />
         </ErrorBoundary>
       </HelmetProvider>
     </CssVarsProvider>
