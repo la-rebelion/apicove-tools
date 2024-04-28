@@ -1,3 +1,4 @@
+// #region imports
 import { useState, useEffect } from 'react'
 
 import { CssVarsProvider, useTheme } from '@mui/joy/styles'
@@ -18,10 +19,14 @@ import {
   List,
   ListItem,
   ListItemDecorator,
+  Radio,
+  RadioGroup,
   Snackbar,
   Typography,
 } from '@mui/joy'
 import CloseIcon from '@mui/icons-material/Close'
+import HttpIcon from '@mui/icons-material/Http'
+import CodeIcon from '@mui/icons-material/Code'
 import CodeSkeleton from './components/CodeSkeleton'
 import { Helmet, HelmetProvider } from 'react-helmet-async'
 import ErrorBoundary from './components/ErrorBoundary'
@@ -37,6 +42,58 @@ import { JestFactory } from '@la-rebelion/swagger-converter/dist/src/JestFactory
 import swaggerExample from './test-data/emailjs-swagger.json'
 import { useMediaQuery } from '@mui/material'
 import ConvertedCodeModal from './components/ConvertedCodeModal'
+// #endregion imports
+
+// #region components to refactor/move ***************************************
+
+function ClientModeRadio() {
+  return (
+    <RadioGroup 
+      aria-label="Client Mode" 
+      name="clientMode" 
+      defaultValue="Fetch HTTP"
+      orientation='horizontal'
+    >
+      <List
+        orientation='horizontal'
+        sx={{
+          minWidth: 240,
+          '--List-gap': '0.5rem',
+          '--ListItem-paddingY': '1rem',
+          '--ListItem-radius': '8px',
+          '--ListItemDecorator-size': '32px',
+        }}
+      >
+        {['Fetch HTTP', 'Client API'].map((item, index) => (
+          <ListItem variant="outlined" key={item} sx={{ boxShadow: 'sm' }}>
+            <ListItemDecorator>
+              {[<HttpIcon />, <CodeIcon />][index]}
+            </ListItemDecorator>
+            <Radio
+              overlay
+              onChange={(event) => { console.log(event.target.value) }}
+              value={item}
+              label={item}
+              sx={{ flexGrow: 1, flexDirection: 'row-reverse' }}
+              slotProps={{
+                action: ({ checked }) => ({
+                  sx: (theme) => ({
+                    ...(checked && {
+                      inset: -1,
+                      border: '2px solid',
+                      borderColor: theme.vars.palette.primary[500],
+                    }),
+                  }),
+                }),
+              }}
+            />
+          </ListItem>
+        ))}
+      </List>
+    </RadioGroup>
+  );
+}
+// #endregion components
 
 function App() {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -59,6 +116,7 @@ function App() {
   }
   const color = alertColor[alertType]
 
+  // #region functions  ******************************************************
   const showMessage = (message: string, msgType: string) => {
     setAlertMessage(message)
     setAlertType(msgType)
@@ -93,17 +151,19 @@ function App() {
       )
       return
     }
+    swaggerFactory.setApiClientModeString('api')
     const jestInstance = swaggerFactory.create()
     const jestTests = jestInstance.render()
     setIsGenerated(true)
     setOutputContent(jestTests)
-    setShowModalCode(true)
+    setShowModalCode(true)    
     // setLayoutModal('fullscreen')
   }
 
   const handleClose = () => {
     setOpen(false)
   }
+  // #endregion functions
 
   return (
     <CssVarsProvider disableTransitionOnChange>
@@ -179,6 +239,7 @@ function App() {
                 }}
               >
                 <HeaderSection />
+                <ClientModeRadio />
               </Stack>
               <Box
                 id="generated-code"

@@ -11,15 +11,18 @@
   "paths": {
     "/me": {
       "get": {
-        "summary": "Gets information for authenticated user."
+        "summary": "Gets information for authenticated user.",
+        "operationId": "getMe"
       }
     },
     "/lists": {
       "get": {
-        "summary": "Gets paginated lists."
+        "summary": "Gets paginated lists.",
+        "operationId": "getLists"        
       },
       "post": {
         "summary": "Creates new list.",
+        "operationId": "createList",
         "parameters": [
           {
             "name": "name",
@@ -35,6 +38,7 @@
     "/lists/{list_id}/contacts": {
       "get": {
         "summary": "Gets paginated contacts within a list.",
+        "operationId": "getContactsInList",
         "parameters": [
           {
             "name": "list_id",
@@ -46,6 +50,7 @@
       },
       "delete": {
         "summary": "Removes contact from list.",
+        "operationId": "removeContactFromList",
         "parameters": [
           {
             "name": "list_id",
@@ -64,10 +69,12 @@
     },
     "/contacts": {
       "get": {
-        "summary": "Gets paginated contacts."
+        "summary": "Gets paginated contacts.",
+        "operationId": "getContacts"
       },
       "post": {
         "summary": "Creates new contact.",
+        "operationId": "createContact",
         "parameters": [
           {
             "name": "email",
@@ -110,6 +117,7 @@
     "/contacts/{contact_id}": {
       "get": {
         "summary": "Gets contact by ID.",
+        "operationId": "getContactById",
         "parameters": [
           {
             "name": "contact_id",
@@ -123,6 +131,7 @@
     "/contacts?email={contact_email}": {
       "get": {
         "summary": "Gets contact by email.",
+        "operationId": "getContactByEmail",
         "parameters": [
           {
             "name": "contact_email",
@@ -135,12 +144,14 @@
     },
     "/contacts/unsubscribed": {
       "get": {
-        "summary": "Gets paginated unsubscribed contacts."
+        "summary": "Gets paginated unsubscribed contacts.",
+        "operationId": "getUnsubscribedContacts"
       }
     },
     "/unsubscribe": {
       "patch": {
         "summary": "Unsubscribe contact.",
+        "operationId": "unsubscribeContact",
         "parameters": [
           {
             "name": "email",
@@ -155,12 +166,14 @@
     },
     "/campaigns": {
       "get": {
-        "summary": "Gets paginated campaigns."
+        "summary": "Gets paginated campaigns.",
+        "operationId": "getCampaigns"
       }
     },
     "/campaigns/{campaign_id}": {
       "get": {
         "summary": "Gets campaign by ID.",
+        "operationId": "getCampaignById",
         "parameters": [
           {
             "name": "campaign_id",
@@ -173,12 +186,14 @@
     },
     "/automations": {
       "get": {
-        "summary": "Gets paginated automations."
+        "summary": "Gets paginated automations.",
+        "operationId": "getAutomations"
       }
     },
     "/automations/{automation_id}": {
       "get": {
         "summary": "Gets automation by ID.",
+        "operationId": "getAutomationById",
         "parameters": [
           {
             "name": "automation_id",

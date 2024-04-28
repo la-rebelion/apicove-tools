@@ -41,15 +41,14 @@ const MochaRunner: React.FC<MochaRunnerProps> = ({ testCode }) => {
         window.mocha.checkLeaks()
         
         // Add the describe blocks
-        const describeCode = extractDescribe(testCode)
-        console.log(describeCode)
+        // const describeCode = extractDescribe(testCode)
 
         // Add the tests
         // @todo - WARN the user in the UI if he understands the risks and still want to run the code
         // eslint-disable-next-line no-new-func
-        new Function('should', describeCode)(should)
+        // new Function('should', describeCode)(should)
         // eslint-disable-next-line no-new-func
-        // new Function('expect', testCode)(expect)
+        new Function('expect', testCode)(expect)
 
         // Run the tests
         window.mocha.run()

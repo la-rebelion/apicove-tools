@@ -26,6 +26,7 @@
           "Email Operations"
         ],
         "summary": "Sends an email.",
+        "operationId": "sendEmail",
         "parameters": [
           {
             "name": "email",
@@ -44,6 +45,7 @@
           "Email Operations"
         ],
         "summary": "Sends a form.",
+        "operationId": "sendForm",
         "parameters": [
           {
             "name": "form",
@@ -61,7 +63,8 @@
         "tags": [
           "History Operations"
         ],
-        "summary": "Gets the history of sent emails."
+        "summary": "Gets the history of sent emails.",
+        "operationId": "getHistory"
       }
     }
   }

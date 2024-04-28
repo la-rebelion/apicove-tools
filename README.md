@@ -45,3 +45,16 @@ The following features are planned for the future:
 Would you like to contribute with ideas or feature requests? Please open a [discussion](https://github.com/la-rebelion/apicove-tools/discussions/new?category=ideas) in the repository.
 
 Do you have a bug to report? Please open an [issue](https://github.com/la-rebelion/apicove-tools/issues/new/choose) in the repository.
+
+## License
+
+MIT License
+
+## Author
+
+[La Rebelion Labs](https://rebelion.la)
+
+## Contributors
+
+- [La Rebelion Labs](https://rebelion.la)
+- [Adrian Escutia](https://linkedin.com/in/adrian-escutia)
