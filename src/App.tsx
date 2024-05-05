@@ -46,12 +46,33 @@ import ConvertedCodeModal from './components/ConvertedCodeModal'
 
 // #region components to refactor/move ***************************************
 
-function ClientModeRadio() {
+export const ClientModeValues = {
+  'http': {
+    label: 'Fetch HTTP',
+    value: 'http',
+    icon: <HttpIcon />,
+  },
+  'api': {
+    label: 'Client API',
+    value: 'api',
+    icon: <CodeIcon />,
+  },
+}
+
+// helper function to get the client mode based on the key
+const getClientMode = (key: string) => {
+  return ClientModeValues[key as keyof typeof ClientModeValues]
+}
+
+// @todo - refactor this component to a separate file
+function ClientModeRadio(
+  { onChange }: { onChange: (event: React.ChangeEvent<HTMLInputElement>) => void }
+) {
   return (
-    <RadioGroup 
-      aria-label="Client Mode" 
-      name="clientMode" 
-      defaultValue="Fetch HTTP"
+    <RadioGroup
+      aria-label="Client Mode"
+      name="clientMode"
+      defaultValue={ClientModeValues.http.value}
       orientation='horizontal'
     >
       <List
@@ -64,16 +85,19 @@ function ClientModeRadio() {
           '--ListItemDecorator-size': '32px',
         }}
       >
-        {['Fetch HTTP', 'Client API'].map((item, index) => (
-          <ListItem variant="outlined" key={item} sx={{ boxShadow: 'sm' }}>
+        {/* use the ClientModeValues to iterate over the values */}
+        {Object.values(ClientModeValues).map((item) => (
+          // {['Fetch HTTP', 'Client API'].map((item, index) => (
+          <ListItem variant="outlined" key={item.value} sx={{ boxShadow: 'sm' }}>
             <ListItemDecorator>
-              {[<HttpIcon />, <CodeIcon />][index]}
+              {/* {[<HttpIcon />, <CodeIcon />][index]} */}
+              {item.icon}
             </ListItemDecorator>
             <Radio
               overlay
-              onChange={(event) => { console.log(event.target.value) }}
-              value={item}
-              label={item}
+              onChange={onChange} //{(event) => { console.log(event.target.value) }}
+              value={item.value}
+              label={item.label}
               sx={{ flexGrow: 1, flexDirection: 'row-reverse' }}
               slotProps={{
                 action: ({ checked }) => ({
@@ -104,6 +128,9 @@ function App() {
   const [alertMessage, setAlertMessage] = useState('')
   const [alertType, setAlertType] = useState('info')
   const [showModalCode, setShowModalCode] = useState(false)
+
+  // what time of client code to generate
+  const [clientMode, setClientMode] = useState(ClientModeValues.http)
 
   const theme = useTheme()
   const isSmallScreen = !useMediaQuery(theme.breakpoints.up('sm'))
@@ -151,12 +178,12 @@ function App() {
       )
       return
     }
-    swaggerFactory.setApiClientModeString('api')
+    swaggerFactory.setApiClientModeString(clientMode.value)
     const jestInstance = swaggerFactory.create()
     const jestTests = jestInstance.render()
     setIsGenerated(true)
     setOutputContent(jestTests)
-    setShowModalCode(true)    
+    setShowModalCode(true)
     // setLayoutModal('fullscreen')
   }
 
@@ -239,7 +266,7 @@ function App() {
                 }}
               >
                 <HeaderSection />
-                <ClientModeRadio />
+                <ClientModeRadio onChange={(event) => setClientMode(getClientMode(event.target.value))} />
               </Stack>
               <Box
                 id="generated-code"
@@ -265,7 +292,7 @@ function App() {
                     buttonText="Clear"
                     onButtonClick={() => showInfoMessage('Button clicked')}
                     // do nothing when code changes for this textarea
-                    onCodeChange={() => {}}
+                    onCodeChange={() => { }}
                   />
                 ) : (
                   <Box

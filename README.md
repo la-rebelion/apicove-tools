@@ -34,13 +34,13 @@ USE_SSH=true yarn deploy
 
 The following features are planned for the future:
 
-- [] Convert Swagger to Strapi
-- [] Feature flags to enable/disable features
-  - [] Allow the developer to select the test framework (Jest, Mocha)
-  - [] Generate the code for direct API calls using Fetch, or generate the code using API helpers (developed by the end user/developer)
-  - [] Allow the developer to select the test runner (**Node**, Browser) for the generated code. 
-    - [] In Browser Mocha is used, requires to remove the import statements from the boilerplate code.
-- [] Karma test runner? Does the community still use it, require it, and is it worth it?
+- [ ] Convert Swagger to Strapi
+- [ ] Feature flags to enable/disable features
+  - [ ] Allow the developer to select the test framework (Jest, Mocha)
+  - [ ] Generate the code for direct API calls using Fetch, or generate the code using API helpers (developed by the end user/developer)
+  - [ ] Allow the developer to select the test runner (**Node**, Browser) for the generated code. 
+    - [ ] In Browser Mocha is used, requires to remove the import statements from the boilerplate code.
+- [ ] Karma test runner? Does the community still use it, require it, and is it worth it?
 
 Would you like to contribute with ideas or feature requests? Please open a [discussion](https://github.com/la-rebelion/apicove-tools/discussions/new?category=ideas) in the repository.
 
